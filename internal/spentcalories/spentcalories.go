@@ -31,12 +31,20 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 		return 0, "", 0, errors.New("неверное количество шагов")
 	}
 
+	if steps <= 0 {
+		return 0, "", 0, errors.New("количество шагов должно быть положительным")
+	}
+
 	trainingType := strings.TrimSpace(parts[1])
 
 	duration, err := time.ParseDuration(strings.TrimSpace(parts[2]))
 
 	if err != nil {
 		return 0, "", 0, errors.New("неверный формат времени")
+	}
+
+	if duration <= 0 {
+		return 0, "", 0, errors.New("продолжительность должна быть положительной")
 	}
 
 	return steps, trainingType, duration, nil
@@ -95,7 +103,7 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 	}
 
 	result := fmt.Sprintf(
-		"Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f",
+		"Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f\n",
 		trainingType,
 		duration.Hours(),
 		dist,
